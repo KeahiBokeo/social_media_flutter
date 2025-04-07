@@ -13,7 +13,7 @@ If user doesn't have an account yet, they can go to register page from here to c
 
 */
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:social_media_flutter/features/auth/presentation/components/my_button.dart';
 import 'package:social_media_flutter/features/auth/presentation/components/my_text_field.dart';
 import 'package:social_media_flutter/features/auth/presentation/cubits/auth_cubit.dart';
@@ -32,7 +32,26 @@ class _LoginPageState extends State<LoginPage> {
   final pwController = TextEditingController();
 
   //login button pressed
-  void login() {}
+  void login() {
+    //prepare email and password
+    final String email = emailController.text;
+    final String pw = pwController.text;
+
+    //auth
+    final authCubit = context.read<AuthCubit>();
+
+    // ensure that the email & pw fields are not empty
+    if (email.isNotEmpty && pw.isNotEmpty) {
+      //login
+      authCubit.login(email, pw);
+    }
+    //display error if some fields are empty
+    else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("Please enter both email and password")),
+      );
+    }
+  }
 
   @override
   void dispose() {
