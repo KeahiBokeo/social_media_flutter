@@ -5,6 +5,8 @@ import 'package:social_media_flutter/features/auth/presentation/cubits/auth_cubi
 import 'package:social_media_flutter/features/auth/presentation/cubits/auth_states.dart';
 import 'package:social_media_flutter/features/auth/presentation/pages/auth_page.dart';
 import 'package:social_media_flutter/features/home/presentation/pages/home_page.dart';
+import 'package:social_media_flutter/features/profile/data/firebase_profile_repo.dart';
+import 'package:social_media_flutter/features/profile/presentation/cubits/profile_cubit.dart';
 import 'package:social_media_flutter/themes/light_mode.dart';
 
 /*
@@ -29,13 +31,23 @@ Check Auth State
 class MyApp extends StatelessWidget {
   //auth repo
   final authRepo = FirebaseAuthRepo();
+  //profile repo
+  final profileRepo = FirebaseProfileRepo();
 
   MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => AuthCubit(authRepo: authRepo)..checkAuth(),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider<AuthCubit>(
+          create: (context) => AuthCubit(authRepo: authRepo)..checkAuth(),
+        ),
+
+        BlocProvider<ProfileCubit>(
+          create: (context) => ProfileCubit(profileRepo: profileRepo),
+        ),
+      ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         theme: lightMode,

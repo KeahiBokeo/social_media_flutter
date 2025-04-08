@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:social_media_flutter/profile/domain/entities/profile_user.dart';
-import 'package:social_media_flutter/profile/domain/repos/profile_repo.dart';
+import 'package:social_media_flutter/features/profile/domain/entities/profile_user.dart';
+import 'package:social_media_flutter/features/profile/domain/repos/profile_repo.dart';
 
 class FirebaseProfileRepo implements ProfileRepo {
   final FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
@@ -19,7 +19,7 @@ class FirebaseProfileRepo implements ProfileRepo {
             uid: uid,
             email: userData['email'],
             name: userData['name'],
-            bio: userData['bio'],
+            bio: userData['bio'] ?? '',
             profileImageUrl: userData['profileImageUrl'].toString(),
           );
         }
