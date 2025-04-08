@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:social_media_flutter/features/auth/data/firebase_auth_repo.dart';
-import 'package:social_media_flutter/features/auth/domain/repos/auth_repo.dart';
 import 'package:social_media_flutter/features/auth/presentation/cubits/auth_cubit.dart';
 import 'package:social_media_flutter/features/auth/presentation/cubits/auth_states.dart';
 import 'package:social_media_flutter/features/auth/presentation/pages/auth_page.dart';
-import 'package:social_media_flutter/features/post/presentation/pages/home_page.dart';
+import 'package:social_media_flutter/features/home/presentation/pages/home_page.dart';
 import 'package:social_media_flutter/themes/light_mode.dart';
 
 /*
@@ -59,7 +58,13 @@ class MyApp extends StatelessWidget {
               );
             }
           },
-          listener: (context, state) {},
+          listener: (context, authState) {
+            if (authState is AuthError) {
+              ScaffoldMessenger.of(
+                context,
+              ).showSnackBar(SnackBar(content: Text(authState.message)));
+            }
+          },
         ),
       ),
     );
