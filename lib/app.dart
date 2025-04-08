@@ -7,6 +7,7 @@ import 'package:social_media_flutter/features/auth/presentation/pages/auth_page.
 import 'package:social_media_flutter/features/home/presentation/pages/home_page.dart';
 import 'package:social_media_flutter/features/profile/data/firebase_profile_repo.dart';
 import 'package:social_media_flutter/features/profile/presentation/cubits/profile_cubit.dart';
+import 'package:social_media_flutter/features/storage/data/firebase_storage_repo.dart';
 import 'package:social_media_flutter/themes/light_mode.dart';
 
 /*
@@ -30,9 +31,11 @@ Check Auth State
 
 class MyApp extends StatelessWidget {
   //auth repo
-  final authRepo = FirebaseAuthRepo();
+  final firebaseAuthRepo = FirebaseAuthRepo();
   //profile repo
-  final profileRepo = FirebaseProfileRepo();
+  final firebaseProfileRepo = FirebaseProfileRepo();
+  //storage repo
+  final firebaseStorageRepo = FirebaseStorageRepo();
 
   MyApp({super.key});
 
@@ -41,11 +44,16 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider<AuthCubit>(
-          create: (context) => AuthCubit(authRepo: authRepo)..checkAuth(),
+          create:
+              (context) => AuthCubit(authRepo: firebaseAuthRepo)..checkAuth(),
         ),
 
         BlocProvider<ProfileCubit>(
-          create: (context) => ProfileCubit(profileRepo: profileRepo),
+          create:
+              (context) => ProfileCubit(
+                profileRepo: firebaseProfileRepo,
+                storageRepo: firebaseStorageRepo,
+              ),
         ),
       ],
       child: MaterialApp(
